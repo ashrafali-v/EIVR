@@ -18,6 +18,9 @@
             form {
                 @include align-self(center);
             }
+            input{
+                height:47px;
+            }
             // .search-method {
             //     @include flexbox();
             //     @include flex-direction(row);
