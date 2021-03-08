@@ -10,6 +10,7 @@ const routes: Routes = [
   { path: 'dashboard', loadChildren: () => import('./dashboard/dashboard.module').then(m => m.DashboardModule) },
   { path: 'history', loadChildren: () => import('./history/history.module').then(m => m.HistoryModule) },
   { path: '',redirectTo: '/home',pathMatch: 'full'},
+  { path: 'reports', loadChildren: () => import('./reports/reports.module').then(m => m.ReportsModule) },
 ];
 
 @NgModule({

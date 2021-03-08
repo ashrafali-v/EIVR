@@ -178,6 +178,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
     example.subscribe(([noOfPaymentsProcessed, amountOfPaymentsProcessed, noOfPaymentsDenied, totalNoOfTextMessages]) => {
       this.loaderPaymentsTab = false;
+      noOfPaymentsProcessed = [{"name":"2021.02.19","series":[{"name":"CREDITCARD","value":0},{"name":"DEBITCARD","value":0}]},{"name":"2021.02.18","series":[{"name":"CREDITCARD","value":20},{"name":"DEBITCARD","value":0}]},{"name":"2021.02.17","series":[{"name":"CREDITCARD","value":0},{"name":"DEBITCARD","value":0}]},{"name":"2021.02.16","series":[{"name":"CREDITCARD","value":0},{"name":"DEBITCARD","value":0}]}]
       Object.assign(this, { noOfPaymentsProcessed });
       Object.assign(this, { amountOfPaymentsProcessed });
       Object.assign(this, { noOfPaymentsDenied });
