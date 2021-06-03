@@ -53,7 +53,7 @@ export class CommonAppService {
   }
   public getPortalAuthentication(token:any){
     var url = this.eivrApiEndpoints['SingleAuth'];
-    return this.httpClient.get('https://d2zm6d6ttnwl62.cloudfront.net/eivr/dashboard/' + '?token='+token).pipe(
+    return this.httpClient.get(this.serviceBase + url + '?token='+token,this.jsonHttpHeader).pipe(
       map((res: any) => res)
     )
   }
