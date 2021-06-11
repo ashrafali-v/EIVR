@@ -7,7 +7,7 @@
             <button class="btn bg-transparent clear-btn" (click)="clearSearchMessage()"><i class="fa fa-times"></i>Clear</button>
         </div>
     </div>
-    <div class="box-panel" *ngIf="messages$ | async as messages; else loadingOrError">
+    <!-- <div class="box-panel" *ngIf="messages$ | async as messages; else loadingOrError">
         <ng-container *ngIf="messages.length;else noItems">
             <table>
                 <thead>
@@ -44,9 +44,65 @@
                             <button type="button" (click)="editMessage(message)" title="Edit Message">
                                 <img alt="Edit Message" src="../../assets/edit.svg" alt="">
                             </button>
-                            <!-- <button type="button" (click)="deleteMessage(message,i)">
-                                <img alt="Delete Message" src="../../assets/delete.svg" alt="">
-                            </button> -->
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <ngb-pagination *ngIf='messages.length > 10' size="sm" [(page)]="currentPage" [pageSize]="pageSize" [collectionSize]="messages.length" [maxSize]="5"></ngb-pagination>
+        </ng-container>
+        <ng-template #noItems>
+            No items found.!
+        </ng-template>
+    </div>
+    <ng-template #loadingOrError>
+        <div *ngIf="loadingError$ | async; else loading">
+            Error loading the list of messages. Please try again later.
+        </div>
+        <ng-template #loading>
+            Loading messages...
+        </ng-template>
+    </ng-template> -->
+
+
+    <!-- test code for sort -->
+
+    <div *ngIf="testMessages as messages; else loadingOrError">
+        <ng-container *ngIf="messages.length;else noItems">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col" sortable="messageKey" (sort)="onSort($event)">
+                            Message key
+                        </th>
+                        <th scope="col" sortable="messageText" (sort)="onSort($event)">
+                            Message value
+                        </th>
+                        <th scope="col" sortable="messageFlow" (sort)="onSort($event)">
+                            Message flow
+                        </th>
+                        <th>
+                            Actions
+                        </th>
+                    </tr>
+                </thead>
+                <tbody malihu-scrollbar [scrollbarOptions]="scrollbarOptions">
+                    <tr *ngFor="let message of messages | slice : (currentPage-1) * pageSize : (currentPage-1) * pageSize + pageSize; let i = index">
+                        <td data-label="Message key">
+                            {{message.messageKey}}
+                        </td>
+                        <td data-label="Message value">
+                            {{message.messageText}}
+                        </td>
+                        <td data-label="Message value">
+                            {{message.messageFlow}}
+                        </td>
+                        <td width="150px" data-label="Actions">
+                            <button type="button" (click)="messageInfo(message)" title="View Message">
+                                <img alt="Information" src="../../assets/infromation.svg" alt="">
+                            </button>
+                            <button type="button" (click)="editMessage(message)" title="Edit Message">
+                                <img alt="Edit Message" src="../../assets/edit.svg" alt="">
+                            </button>
                         </td>
                     </tr>
                 </tbody>

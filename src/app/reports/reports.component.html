@@ -60,8 +60,8 @@
         </form>
         <div id="phonecalls" class="tab-pane active">
           <h3>Phone calls tab</h3>
-          <div class="tab-trigger">
-            <span>Range:</span>
+          <div class="tab-trigger inline-block">
+            <span class="margin-right-5px">Range:</span>
             <select name="period-select" id="select-interval" class="day-filter" (change)="selectChangeHandler($event)">
               <option value="DAILY">Daily</option>
               <option value="WEEKLY">Weekly</option>
@@ -70,17 +70,19 @@
               <option value="CUSTOM">Custom</option>
             </select>
           </div>
-          <span>Report Type:</span>
-          <select name="period-select" id="select-interval" class="day-filter" (change)="selectChangeHandler($event)">
-            <option value="offtime">Off Hour</option>
-            <option value="buisnesstime">Buisness Hour</option>
-          </select>
-          <button class="btn btn-primary">Download</button>
+          <div class="tab-trigger inline-block">
+            <span class="margin-right-5px">Report Type:</span>
+            <select name="period-select" id="select-interval" class="day-filter" (change)="selectChangeHandler($event)">
+              <option value="offtime">Off Hour</option>
+              <option value="buisnesstime">Buisness Hour</option>
+            </select>
+          </div>
+          <button class="btn btn-primary inline-block download-button">Download</button>
         </div>
         <div id="payments" class="tab-pane fade">
             <h3>Payments tab</h3>
-            <div class="tab-trigger">
-              <span>Range:</span>
+            <div class="tab-trigger inline-block">
+              <span class="margin-right-5px">Range:</span>
               <select name="period-select" id="select-interval" class="day-filter" (change)="selectChangeHandler($event)">
                 <option value="DAILY">Daily</option>
                 <option value="WEEKLY">Weekly</option>
@@ -88,13 +90,13 @@
                 <option value="ANNUALLY">Annually</option>
                 <option value="CUSTOM">Custom</option>
               </select>
-              <button class="btn btn-primary">Download</button>
             </div>
+            <button class="btn btn-primary inline-block download-button">Download</button>
         </div>
         <div id="calls" class="tab-pane fade">
          <h3>Calls tab</h3>
-          <div class="tab-trigger">
-            <span>Range:</span>
+          <div class="tab-trigger inline-block">
+            <span class="margin-right-5px">Range:</span>
             <select name="period-select" id="select-interval" class="day-filter" (change)="selectChangeHandler($event)">
               <option value="DAILY">Daily</option>
               <option value="WEEKLY">Weekly</option>
@@ -102,8 +104,8 @@
               <option value="ANNUALLY">Annually</option>
               <option value="CUSTOM">Custom</option>
             </select>
-            <button class="btn btn-primary">Download</button>
           </div>
+          <button class="btn btn-primary inline-block download-button">Download</button>
         </div>
     </div>
 </div>

@@ -285,6 +285,18 @@
                     padding: $default-padding*1.35 $default-padding;
                 }
             }
+            .tab-pane{
+                width: 100%;
+                .download-button{
+                    margin-left: 1%;
+                }
+            }
+            .inline-block{
+                display: inline-block;
+            }
+            .margin-right-5px{
+                margin-right: 5px;
+            }
         }
     }
 }
