@@ -54,8 +54,8 @@ export class NgbdSortableHeader {
 })
 export class MessageComponent implements OnInit, OnDestroy {
   messages$: any = [];
-  testMessages:Messages[];
-  testMessagestemp:Messages[];
+  testMessages:any =[];
+  testMessagestemp:any =[];
   getAllMessagesLoader: boolean = true;
   currentPage: any = 1;
   pageSize: number = 10;
@@ -64,7 +64,6 @@ export class MessageComponent implements OnInit, OnDestroy {
   private observableSubscriptions = new SubSink();
   public scrollbarOptions = { axis: 'y', theme: '3d-dark' };
   /*-------- Sort code----*/
-
   @ViewChildren(NgbdSortableHeader) headers: QueryList<NgbdSortableHeader>;
   /*-------- Sort code----*/
 
@@ -133,9 +132,33 @@ export class MessageComponent implements OnInit, OnDestroy {
           "messageText": "The payment amount entered is ${paymentAmount}.  Press 1 pound or say Yes to confirm. Press 2 pound or say No to enter the payment amount. ",
           "messageFlow": "Payment Enter Amount Flow"
       },
-    
+      {
+          "messageKey": "lexTextSelectionPhoneMsg",
+          "messageText": "Press 1 pound or say 1 to send text confirmation to the number you are calling from, Press 2 pound or say 2 to send text confirmation to a number from your utility account. ",
+          "messageFlow": "Payment Terms Flow"
+      },
+      {
+          "messageKey": "lexInvalidPayAmountConfirmation",
+          "messageText": "The payment amount entered is ${paymentAmount}.  Press 1 pound or say Yes to confirm. Press 2 pound or say No to enter the payment amount. ",
+          "messageFlow": "Payment Enter Amount Flow"
+      },
+      {
+          "messageKey": "maxCreditAccountMsg",
+          "messageText": "<speak> This account has reached the maximum credit balance allowed and is ineligible to make payment through the pay by phone system.</speak>",
+          "messageFlow": "Payment Eligibility Flow"
+      },
+      {
+          "messageKey": "listAccountMsg",
+          "messageText": "<speak>Please select from the following list which account you are calling about. {account1}, {account2}, {account3}, {account4} </speak>",
+          "messageFlow": "Multi Account Flow"
+      },
+      {
+          "messageKey": "lexTextConfirmationSentSuccess",
+          "messageText": "We have sent you a text confirmation at phone number {phoneNumber}.  Your confirmation number is {transId}.  Press 1 pound or say 1 to make another payment, Press 2 pound or say 2 for main menu. To end your call, simply hang up. ",
+          "messageFlow": "Payment Text Flow"
+      }
     ]
-    this.testMessagestemp =this.testMessages;
+    this.testMessagestemp =this.messages$;
   }
   editMessage(message: any) {
     console.log(message);
@@ -236,9 +259,9 @@ export class MessageComponent implements OnInit, OnDestroy {
  
      // sorting countries
      if (direction === '' || column === '') {
-       this.testMessages = this.testMessagestemp;
+       this.messages$ = this.testMessagestemp;
      } else {
-       this.testMessages = [...this.testMessages].sort((a, b) => {
+       this.messages$ = [...this.messages$].sort((a, b) => {
          const res = compare(a[column], b[column]);
          return direction === 'asc' ? res : -res;
        });

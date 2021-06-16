@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { BrowserModule } from '@angular/platform-browser';
 import { MessageComponent,NgbdSortableHeader } from './message.component';
 import { MessageRoutingModule } from './message-routing.module';
 import { FormsModule } from '@angular/forms';
