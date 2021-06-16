@@ -1,0 +1,111 @@
+<div class="app-dashboard">
+    <div class="eivr-tabtrigger">
+        <ul class="nav nav-tabs">
+            <li><a class="active" data-toggle="tab" href="#phonecalls" (click)="onSelectTab('phonecalls')">Phone calls</a></li>
+            <li><a data-toggle="tab" href="#payments" (click)="onSelectTab('payments')">Payments</a></li>
+            <li><a data-toggle="tab" href="#calls" (click)="onSelectTab('calls')">Calls</a></li>
+        </ul>
+    </div>
+    <div class="tab-content">
+        <form class="form-inline" *ngIf="showCustomDatePicker">
+          <div class="form-group hidden">
+            <div class="input-group">
+              <input name="datepicker"
+                     class="form-control"
+                     ngbDatepicker
+                     #datepicker="ngbDatepicker"
+                     [autoClose]="'outside'"
+                     (dateSelect)="onDateSelection($event)"
+                     [displayMonths]="2"
+                     [dayTemplate]="t"
+                     outsideDays="hidden"
+                     [startDate]="fromDate!"
+                     tabindex="-1">
+              <ng-template #t let-date let-focused="focused">
+                <span class="custom-day"
+                      [class.focused]="focused"
+                      [class.range]="isRange(date)"
+                      [class.faded]="isHovered(date) || isInside(date)"
+                      (mouseenter)="hoveredDate = date"
+                      (mouseleave)="hoveredDate = null">
+                  {{ date.day }}
+                </span>
+              </ng-template>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="input-group">
+              <input #dpFromDate
+                     class="form-control" placeholder="yyyy-mm-dd"
+                     name="dpFromDate"
+                     [value]="formatter.format(fromDate)"
+                     (input)="fromDate = validateInput(fromDate, dpFromDate.value)">
+              <div class="input-group-append">
+                <button class="btn btn-outline-secondary calendar" (click)="datepicker.toggle()" type="button"></button>
+              </div>
+            </div>
+          </div>
+          <div class="form-group ml-2">
+            <div class="input-group">
+              <input #dpToDate
+                     class="form-control" placeholder="yyyy-mm-dd"
+                     name="dpToDate"
+                     [value]="formatter.format(toDate)"
+                     (input)="toDate = validateInput(toDate, dpToDate.value)">
+              <div class="input-group-append">
+                <button class="btn btn-outline-secondary calendar" (click)="datepicker.toggle()" type="button"></button>
+              </div>
+            </div>
+          </div>
+        </form>
+        <div id="phonecalls" class="tab-pane active">
+          <h3>Phone calls tab</h3>
+          <div class="tab-trigger inline-block">
+            <span class="margin-right-5px">Range:</span>
+            <select name="period-select" id="select-interval" class="day-filter" (change)="selectChangeHandler($event)">
+              <option value="DAILY">Daily</option>
+              <option value="WEEKLY">Weekly</option>
+              <option value="MONTHLY">Monthly</option>
+              <option value="ANNUALLY">Annually</option>
+              <option value="CUSTOM">Custom</option>
+            </select>
+          </div>
+          <div class="tab-trigger inline-block">
+            <span class="margin-right-5px">Report Type:</span>
+            <select name="period-select" id="select-interval" class="day-filter" (change)="selectChangeHandler($event)">
+              <option value="offtime">Off Hour</option>
+              <option value="buisnesstime">Buisness Hour</option>
+            </select>
+          </div>
+          <button class="btn btn-primary inline-block download-button">Download</button>
+        </div>
+        <div id="payments" class="tab-pane fade">
+            <h3>Payments tab</h3>
+            <div class="tab-trigger inline-block">
+              <span class="margin-right-5px">Range:</span>
+              <select name="period-select" id="select-interval" class="day-filter" (change)="selectChangeHandler($event)">
+                <option value="DAILY">Daily</option>
+                <option value="WEEKLY">Weekly</option>
+                <option value="MONTHLY">Monthly</option>
+                <option value="ANNUALLY">Annually</option>
+                <option value="CUSTOM">Custom</option>
+              </select>
+            </div>
+            <button class="btn btn-primary inline-block download-button">Download</button>
+        </div>
+        <div id="calls" class="tab-pane fade">
+         <h3>Calls tab</h3>
+          <div class="tab-trigger inline-block">
+            <span class="margin-right-5px">Range:</span>
+            <select name="period-select" id="select-interval" class="day-filter" (change)="selectChangeHandler($event)">
+              <option value="DAILY">Daily</option>
+              <option value="WEEKLY">Weekly</option>
+              <option value="MONTHLY">Monthly</option>
+              <option value="ANNUALLY">Annually</option>
+              <option value="CUSTOM">Custom</option>
+            </select>
+          </div>
+          <button class="btn btn-primary inline-block download-button">Download</button>
+        </div>
+    </div>
+</div>

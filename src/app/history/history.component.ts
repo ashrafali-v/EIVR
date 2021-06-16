@@ -45,7 +45,7 @@ export class HistoryComponent implements OnInit {
   pageSize: number = 10;
   day: any;
   month: any;
-  public scrollbarOptions = { axis: 'y', theme: '3d-dark' };
+  public scrollbarOptions = { axis: 'y', theme: '3d-thick' };
   model: NgbDateStruct;
   placement = 'bottom';
   maxDate:any;

@@ -39,6 +39,9 @@
                     @include border-radius(22px 0 0 22px);
                     width: inherit;
                 }
+                input{
+                    height:47px;
+                }
             }
             .search-input {
                 @include border-radius( 0px);

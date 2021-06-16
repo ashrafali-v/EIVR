@@ -23,8 +23,15 @@ import '@angular/localize/init';
  */
 
 /** IE10 and IE11 requires the following for NgClass support on SVG elements */
-// import 'classlist.js';  // Run `npm install --save classlist.js`.
-
+import 'core-js/es6';
+import 'core-js/es7/array';
+import 'core-js/es7/reflect';
+import 'core-js/client/shim';
+// IE11 fix
+if (typeof SVGElement.prototype.contains == 'undefined') {
+    SVGElement.prototype.contains = HTMLDivElement.prototype.contains;
+}
+import 'classlist.js';  // Run `npm install --save classlist.js`.
 /**
  * Web Animations `@angular/platform-browser/animations`
  * Only required if AnimationBuilder is used within the application and using IE/Edge or Safari.
@@ -65,3 +72,4 @@ import 'zone.js/dist/zone';  // Included with Angular CLI.
 /***************************************************************************************************
  * APPLICATION IMPORTS
  */
+import 'intl';  // Run `npm install --save intl`.

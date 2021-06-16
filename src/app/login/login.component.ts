@@ -1,5 +1,5 @@
 import { Component, OnInit,ViewChild,AfterViewInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router,ActivatedRoute } from '@angular/router';
 import { CommonAppService } from '../services/common-app.service';
 import { NgForm } from '@angular/forms';
 @Component({
@@ -14,13 +14,26 @@ export class LoginComponent implements OnInit,AfterViewInit  {
   invalidCred:boolean = false;
   isLoginInProgress:boolean = false;
   loginFailed:any;
-  constructor(private router: Router,private sharedService: CommonAppService) { 
+  portaltoken:any;
+  constructor(private router: Router,private sharedService: CommonAppService,public route:ActivatedRoute) { 
     this.sharedService.setComponentStatus(false,false,false);
   }
   ngOnInit(): void {
     if (localStorage.getItem('AccessToken') !== null) {
       this.router.navigate(['/home']);
     }
+    this.route.queryParams.subscribe(params => {
+      this.sharedService.getPortalAuthentication(params.token).subscribe(response=>{
+        console.log(response); 
+        if(response.result == true){
+          this.loginSuccess(response.data);
+        }else{
+          this.loginError('login failed');
+        }
+      },err=>{
+        this.loginError(err);
+      });
+    });
   }
   ngAfterViewInit(){
     /*Get form value chnage event of  loginForm*/
