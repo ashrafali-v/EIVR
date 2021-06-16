@@ -1,14 +1,42 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,Injectable } from '@angular/core';
 import { CommonAppService } from '../services/common-app.service';
 import { catchError,retry } from 'rxjs/operators';
 import { Subject,of } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { UserLogComponent } from '../modals/user-log/user-log.component';
-import {NgbDateStruct} from '@ng-bootstrap/ng-bootstrap';
+import {NgbCalendar, NgbDateAdapter, NgbDateParserFormatter, NgbDateStruct} from '@ng-bootstrap/ng-bootstrap';
+/**
+ * This Service handles how the date is rendered and parsed from keyboard i.e. in the bound input field.
+ */
+@Injectable()
+export class CustomDateParserFormatter extends NgbDateParserFormatter {
+
+  readonly DELIMITER = '/';
+
+  parse(value: string): NgbDateStruct | null {
+    if (value) {
+      let date = value.split(this.DELIMITER);
+      return {
+        day : parseInt(date[0], 10),
+        month : parseInt(date[1], 10),
+        year : parseInt(date[2], 10)
+      };
+    }
+    return null;
+  }
+
+  format(date: NgbDateStruct | null): string {
+    return date ? date.month + this.DELIMITER + date.day + this.DELIMITER + date.year : '';
+  }
+}
+
 @Component({
   selector: 'app-history',
   templateUrl: './history.component.html',
-  styleUrls: ['./history.component.scss']
+  styleUrls: ['./history.component.scss'],
+  providers: [
+    {provide: NgbDateParserFormatter, useClass: CustomDateParserFormatter}
+  ]
 })
 export class HistoryComponent implements OnInit {
   paymentList$:any = [];
@@ -17,7 +45,7 @@ export class HistoryComponent implements OnInit {
   pageSize: number = 10;
   day: any;
   month: any;
-  public scrollbarOptions = { axis: 'y', theme: '3d-dark' };
+  public scrollbarOptions = { axis: 'y', theme: '3d-thick' };
   model: NgbDateStruct;
   placement = 'bottom';
   maxDate:any;

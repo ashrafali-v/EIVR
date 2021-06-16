@@ -108,7 +108,7 @@
         <div id="payments" class="tab-pane active">
             <div class="visual-grid">
                 <div class="visual-box half-width">
-                    <div class="visual-graph" *ngIf="noOfPaymentsProcessed != undefined || loaderPaymentsTab;else loadingError">
+                    <div class="visual-graph">
                         <h3>No of Payments Processed</h3>
                         <ng-container *ngIf="!loaderPaymentsTab; else loading">
                             <div class="graph-box">

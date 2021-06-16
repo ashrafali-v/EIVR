@@ -30,7 +30,8 @@ export class CommonAppService {
     GetLogByContactId: 'getContactId/',
     GetLogByPhoneNumber: 'getContactDetailByPhone/',
     GetLogByAccountNumber: 'getAccountByNo/',
-    PaymentList: 'paymentList/'
+    PaymentList: 'paymentList/',
+    SingleAuth:'loginSession/'
   }
   constructor(private httpClient: HttpClient) {
     this.componentStatus = new ComponentStatus();
@@ -47,6 +48,12 @@ export class CommonAppService {
   public getUserLogin(userNmae: any, password: any) {
     var url = this.eivrApiEndpoints['UserLogin'];
     return this.httpClient.get(this.serviceBase + url + '?username=' + userNmae + '&password=' + password, this.jsonHttpHeader).pipe(
+      map((res: any) => res)
+    )
+  }
+  public getPortalAuthentication(token:any){
+    var url = this.eivrApiEndpoints['SingleAuth'];
+    return this.httpClient.get(this.serviceBase + url + '?token='+token,this.jsonHttpHeader).pipe(
       map((res: any) => res)
     )
   }

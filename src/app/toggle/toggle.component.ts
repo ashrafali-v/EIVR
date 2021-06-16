@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit ,Directive, EventEmitter, Input, Output, QueryList, ViewChildren} from '@angular/core';
 import { CommonAppService } from '../services/common-app.service';
 import { catchError,retry } from 'rxjs/operators';
 import { Subject,of } from 'rxjs';
@@ -6,6 +6,47 @@ import { SubSink } from 'subsink';
 import { ToastrService } from 'ngx-toastr';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import {CreateToggleComponent} from '../modals/create-toggle/create-toggle.component'
+
+/*-------- Sort code----*/
+interface Toggles {
+  toggleKey: string;
+  toggleValue: string;
+  toggleInfo: string;
+}
+export type SortColumn = keyof Toggles | '';
+export type SortDirection = 'asc' | 'desc' | '';
+const rotate: {[key: string]: SortDirection} = { 'asc': 'desc', 'desc': '', '': 'asc' };
+
+const compare = (v1: string | number, v2: string | number) => v1 < v2 ? -1 : v1 > v2 ? 1 : 0;
+
+export interface SortEvent {
+  column: SortColumn;
+  direction: SortDirection;
+}
+
+@Directive({
+  selector: 'th[sortable]',
+  host: {
+    '[class.asc]': 'direction === "asc"',
+    '[class.desc]': 'direction === "desc"',
+    '(click)': 'rotate()'
+  }
+})
+export class NgbdSortableHeader {
+
+  @Input() sortable: SortColumn = '';
+  @Input() direction: SortDirection = '';
+  @Output() sort = new EventEmitter<SortEvent>();
+
+  rotate() {
+    this.direction = rotate[this.direction];
+    this.sort.emit({column: this.sortable, direction: this.direction});
+  }
+}
+
+/*-------- Sort code----*/
+
+
 @Component({
   selector: 'app-toggle',
   templateUrl: './toggle.component.html',
@@ -18,10 +59,15 @@ export class ToggleComponent implements OnInit {
     this.sharedService.setComponentStatus(true,true,true);
   }
   toggles$:any = [];
+  testToggles:any = [];
+  testTogglestemp:any = [];
   currentPage: any = 1;
   pageSize: number = 10;
   toggleKey:any='';
   loadingError$ = new Subject<boolean>();
+  /*-------- Sort code----*/
+  @ViewChildren(NgbdSortableHeader) headers: QueryList<NgbdSortableHeader>;
+  /*-------- Sort code----*/
   ngOnInit(): void {
     this.getAllToggles();
   }
@@ -37,6 +83,75 @@ export class ToggleComponent implements OnInit {
       }),
       retry(2)
     );
+    this.testToggles = [
+      {
+          "toggleKey": "lex_accountsave",
+          "toggleValue": "4000,4000,500,false",
+          "toggleInfo": null
+      },
+      {
+          "toggleKey": "minPaymentAmount",
+          "toggleValue": "9",
+          "toggleInfo": null
+      },
+      {
+          "toggleKey": "maxPaymentPerCall",
+          "toggleValue": "6",
+          "toggleInfo": null
+      },
+      {
+          "toggleKey": "mondayOpHourEnd",
+          "toggleValue": "1630",
+          "toggleInfo": null
+      },
+      {
+          "toggleKey": "lex-barge-in-enabled",
+          "toggleValue": "true",
+          "toggleInfo": null
+      },
+      {
+          "toggleKey": "thursdayOpHourEnd",
+          "toggleValue": "1630",
+          "toggleInfo": null
+      },
+      {
+          "toggleKey": "saturdayOpHourStart",
+          "toggleValue": "745",
+          "toggleInfo": null
+      },
+      {
+          "toggleKey": "saturdayOpHourEnd",
+          "toggleValue": "1630",
+          "toggleInfo": null
+      },
+      {
+          "toggleKey": "paymentProcessingTime",
+          "toggleValue": "30000",
+          "toggleInfo": null
+      } ,
+      {
+        "toggleKey": "tuesdayOpHourEnd",
+        "toggleValue": "1630",
+        "toggleInfo": null
+      },
+      {
+          "toggleKey": "lex-max-speech-duration-ms",
+          "toggleValue": "3000",
+          "toggleInfo": null
+      },
+      {
+          "toggleKey": "systemWarning",
+          "toggleValue": "false",
+          "toggleInfo": null
+      },
+      {
+          "toggleKey": "lex_paymentexecutionstart",
+          "toggleValue": "4000,4000,500,false",
+          "toggleInfo": null
+      }
+    ]
+
+    this.testTogglestemp = this.toggles$;
   }
   searchToggle(){
     this.toggles$.length = 0;
@@ -90,5 +205,27 @@ export class ToggleComponent implements OnInit {
       console.log(reason);
     });
   }
+
+  /*-------- Sort code----*/
+
+  onSort({column, direction}: SortEvent) {
+    // resetting other headers
+    this.headers.forEach(header => {
+      if (header.sortable !== column) {
+        header.direction = '';
+      }
+    });
+
+    // sorting countries
+    if (direction === '' || column === '') {
+      this.toggles$ = this.testTogglestemp;
+    } else {
+      this.toggles$ = [...this.toggles$].sort((a, b) => {
+        const res = compare(a[column], b[column]);
+        return direction === 'asc' ? res : -res;
+      });
+    }
+  }
+/*-------- Sort code----*/
 
 }

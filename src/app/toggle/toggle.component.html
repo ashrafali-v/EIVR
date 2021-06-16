@@ -8,7 +8,7 @@
         </div>
         <!-- <button type="button" class="btn btn-primary" (click)="createToggle()">Create Toggle</button> -->
     </div>
-    <div class="box-panel" *ngIf="toggles$ | async as toggles; else loadingOrError">
+    <!-- <div class="box-panel" *ngIf="toggles$ | async as toggles; else loadingOrError">
         <ng-container *ngIf="toggles.length; else noItems">
             <table>
                 <thead>
@@ -45,7 +45,55 @@
             </table>
             <ngb-pagination *ngIf='toggles.length > 10' size="sm" [(page)]="currentPage" [pageSize]="pageSize" [collectionSize]="toggles.length" [maxSize]="5"></ngb-pagination>
         </ng-container>
-        <ng-template #noItems>No Items found.!</ng-template>
+        <ng-template #noItems>No items found.!</ng-template>
+    </div>
+    <ng-template #loadingOrError>
+        <div *ngIf="loadingError$ | async; else loading">
+            Error loading the list of users. Please try again later.
+        </div>
+        <ng-template #loading>
+            Loading toggles...
+        </ng-template>
+    </ng-template> -->
+
+    <div class="box-panel" *ngIf="toggles$ | async as toggles; else loadingOrError">
+        <ng-container *ngIf="toggles.length; else noItems">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col" sortable="toggleKey" (sort)="onSort($event)">
+                            Toggle key
+                        </th>
+                        <th scope="col" sortable="toggleValue" (sort)="onSort($event)">
+                            Toggle value
+                        </th>
+                        <th scope="col" sortable="toggleInfo" (sort)="onSort($event)">
+                            Toggle info
+                        </th>
+                    </tr>
+                </thead>
+                <tbody malihu-scrollbar [scrollbarOptions]="scrollbarOptions">
+                    <tr *ngFor="let toggle of toggles | slice : (currentPage-1) * pageSize : (currentPage-1) * pageSize + pageSize; let i = index">
+                        <td>
+                            {{toggle.toggleKey}}
+                        </td>
+                        <td>
+                            {{toggle.toggleValue}}
+                        </td>
+                        <td>
+                            <ng-template *ngIf="toggle.toggleInfo != null;else nullValue">
+                                {{toggle.toggleInfo}}
+                            </ng-template>
+                            <ng-template #nullValue>
+                                --
+                            </ng-template>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <ngb-pagination *ngIf='toggles.length > 10' size="sm" [(page)]="currentPage" [pageSize]="pageSize" [collectionSize]="toggles.length" [maxSize]="5"></ngb-pagination>
+        </ng-container>
+        <ng-template #noItems>No items found.!</ng-template>
     </div>
     <ng-template #loadingOrError>
         <div *ngIf="loadingError$ | async; else loading">
