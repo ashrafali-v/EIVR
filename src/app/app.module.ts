@@ -19,6 +19,7 @@ import { HttpInterceptorProviders } from '../app/httpInterceptors/interceptor.pr
 import { UserLogComponent } from './modals/user-log/user-log.component';
 import { ViewLogComponent } from './modals/view-log/view-log.component';
 import { MalihuScrollbarModule } from 'ngx-malihu-scrollbar';
+import { UpdateToggleComponent } from './modals/update-toggle/update-toggle.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -31,6 +32,7 @@ import { MalihuScrollbarModule } from 'ngx-malihu-scrollbar';
     CreateToggleComponent,
     UserLogComponent,
     ViewLogComponent,
+    UpdateToggleComponent,
   ],
   imports: [
     BrowserModule,

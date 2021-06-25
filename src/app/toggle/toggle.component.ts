@@ -6,6 +6,7 @@ import { SubSink } from 'subsink';
 import { ToastrService } from 'ngx-toastr';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import {CreateToggleComponent} from '../modals/create-toggle/create-toggle.component'
+import {UpdateToggleComponent} from '../modals/update-toggle/update-toggle.component'
 
 /*-------- Sort code----*/
 interface Toggles {
@@ -75,81 +76,83 @@ export class ToggleComponent implements OnInit {
     console.log(event);
   }
   getAllToggles(){
-    this.toggles$ = this.sharedService.getAllToggles().pipe(
+    this.sharedService.getAllToggles().pipe(
       catchError(error => {
         console.error('error loading the list of users', error);
         this.loadingError$.next(true);
         return of();
       }),
       retry(2)
-    );
-    this.testToggles = [
-      {
-          "toggleKey": "lex_accountsave",
-          "toggleValue": "4000,4000,500,false",
-          "toggleInfo": null
-      },
-      {
-          "toggleKey": "minPaymentAmount",
-          "toggleValue": "9",
-          "toggleInfo": null
-      },
-      {
-          "toggleKey": "maxPaymentPerCall",
-          "toggleValue": "6",
-          "toggleInfo": null
-      },
-      {
-          "toggleKey": "mondayOpHourEnd",
-          "toggleValue": "1630",
-          "toggleInfo": null
-      },
-      {
-          "toggleKey": "lex-barge-in-enabled",
-          "toggleValue": "true",
-          "toggleInfo": null
-      },
-      {
-          "toggleKey": "thursdayOpHourEnd",
-          "toggleValue": "1630",
-          "toggleInfo": null
-      },
-      {
-          "toggleKey": "saturdayOpHourStart",
-          "toggleValue": "745",
-          "toggleInfo": null
-      },
-      {
-          "toggleKey": "saturdayOpHourEnd",
-          "toggleValue": "1630",
-          "toggleInfo": null
-      },
-      {
-          "toggleKey": "paymentProcessingTime",
-          "toggleValue": "30000",
-          "toggleInfo": null
-      } ,
-      {
-        "toggleKey": "tuesdayOpHourEnd",
-        "toggleValue": "1630",
-        "toggleInfo": null
-      },
-      {
-          "toggleKey": "lex-max-speech-duration-ms",
-          "toggleValue": "3000",
-          "toggleInfo": null
-      },
-      {
-          "toggleKey": "systemWarning",
-          "toggleValue": "false",
-          "toggleInfo": null
-      },
-      {
-          "toggleKey": "lex_paymentexecutionstart",
-          "toggleValue": "4000,4000,500,false",
-          "toggleInfo": null
-      }
-    ]
+    ).subscribe(result=>{
+      this.toggles$ = result;
+    });
+    // this.toggles$ = [
+    //   {
+    //       "toggleKey": "lex_accountsave",
+    //       "toggleValue": "4000,4000,500,false",
+    //       "toggleInfo": null
+    //   },
+    //   {
+    //       "toggleKey": "minPaymentAmount",
+    //       "toggleValue": "9",
+    //       "toggleInfo": null
+    //   },
+    //   {
+    //       "toggleKey": "maxPaymentPerCall",
+    //       "toggleValue": "6",
+    //       "toggleInfo": null
+    //   },
+    //   {
+    //       "toggleKey": "mondayOpHourEnd",
+    //       "toggleValue": "1630",
+    //       "toggleInfo": null
+    //   },
+    //   {
+    //       "toggleKey": "lex-barge-in-enabled",
+    //       "toggleValue": "true",
+    //       "toggleInfo": null
+    //   },
+    //   {
+    //       "toggleKey": "thursdayOpHourEnd",
+    //       "toggleValue": "1630",
+    //       "toggleInfo": null
+    //   },
+    //   {
+    //       "toggleKey": "saturdayOpHourStart",
+    //       "toggleValue": "745",
+    //       "toggleInfo": null
+    //   },
+    //   {
+    //       "toggleKey": "saturdayOpHourEnd",
+    //       "toggleValue": "1630",
+    //       "toggleInfo": null
+    //   },
+    //   {
+    //       "toggleKey": "paymentProcessingTime",
+    //       "toggleValue": "30000",
+    //       "toggleInfo": null
+    //   } ,
+    //   {
+    //     "toggleKey": "tuesdayOpHourEnd",
+    //     "toggleValue": "1630",
+    //     "toggleInfo": null
+    //   },
+    //   {
+    //       "toggleKey": "lex-max-speech-duration-ms",
+    //       "toggleValue": "3000",
+    //       "toggleInfo": null
+    //   },
+    //   {
+    //       "toggleKey": "systemWarning",
+    //       "toggleValue": "false",
+    //       "toggleInfo": null
+    //   },
+    //   {
+    //       "toggleKey": "lex_paymentexecutionstart",
+    //       "toggleValue": "4000,4000,500,false",
+    //       "toggleInfo": null
+    //   }
+    // ]
 
     this.testTogglestemp = this.toggles$;
   }
@@ -227,5 +230,30 @@ export class ToggleComponent implements OnInit {
     }
   }
 /*-------- Sort code----*/
-
+editMessage(toggle: any) {
+    const updateMessageModalRef = this.modalService.open(UpdateToggleComponent, {
+      ariaLabelledBy: "modal-basic-title",
+      size: "lg",
+      scrollable: true,
+      backdrop: 'static'
+    });
+    updateMessageModalRef.componentInstance.modalTitle = "Edit message";
+    updateMessageModalRef.componentInstance.modalDescription = "Edit message description";
+    updateMessageModalRef.componentInstance.toggleValue = toggle.toggleValue;
+    updateMessageModalRef.componentInstance.toggleKey = toggle.toggleKey;
+    updateMessageModalRef.componentInstance.emitService.subscribe((result) => {
+      if (result) {
+        toggle.toggleValue = result;
+        updateMessageModalRef.close(result);
+        this.sharedService.saveToggle(toggle).subscribe(data => {
+          this.toastService.success("Toggle updated successfully", "Success");
+        }, err => {
+          console.log(err);
+          this.toastService.error('Toggle update failed', 'Error');
+        });
+      }
+    }, (reason) => {
+      console.log(reason);
+    });
+}
 }
