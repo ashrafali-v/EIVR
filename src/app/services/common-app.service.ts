@@ -104,8 +104,9 @@ export class CommonAppService {
       map((res: any) => res)
     )
   }
-  public saveToggle(data: any) {
+  public saveToggle(toggle: any) {
     var url = this.eivrApiEndpoints['SaveToggle'];
+    var data = {"toggleKey":toggle.toggleKey,"toggleValue":toggle.toggleValue,"toggleInfo":toggle.toggleInfo};
     return this.httpClient.post(this.serviceBase + url, data, this.jsonHttpHeader).pipe(
       map((res: any) => res)
     )
